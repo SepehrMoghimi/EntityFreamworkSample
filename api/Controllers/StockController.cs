@@ -12,6 +12,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Net.Http.Headers;
 using Microsoft.Extensions.Logging;
 using api.Helpers;
+using Microsoft.AspNetCore.Authorization;
 
 
 namespace api.Controllers
@@ -29,6 +30,7 @@ namespace api.Controllers
         }
 
         [HttpGet]
+        [Authorize]
         public async Task<IActionResult> GetAll([FromQuery] QueryObject query)
         {
             if (!ModelState.IsValid)
@@ -40,7 +42,7 @@ namespace api.Controllers
 
             var stockDto = stocks.Select(s => s.ToStockDto());
 
-        //   SetCorrelationIdHeader();
+            //   SetCorrelationIdHeader();
 
             return Ok(stocks);
         }

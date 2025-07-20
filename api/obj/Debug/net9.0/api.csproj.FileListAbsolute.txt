@@ -158,3 +158,4 @@
 /Users/sepicoala/Desktop/API/api/obj/Debug/net9.0/api.pdb
 /Users/sepicoala/Desktop/API/api/obj/Debug/net9.0/api.genruntimeconfig.cache
 /Users/sepicoala/Desktop/API/api/obj/Debug/net9.0/ref/api.dll
+/Users/sepicoala/Desktop/API/api/obj/Debug/net9.0/api.sourcelink.json
