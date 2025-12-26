@@ -146,12 +146,6 @@
 /Users/sepicoala/Desktop/API/api/obj/Debug/net9.0/staticwebassets.build.json
 /Users/sepicoala/Desktop/API/api/obj/Debug/net9.0/staticwebassets.development.json
 /Users/sepicoala/Desktop/API/api/obj/Debug/net9.0/staticwebassets.build.endpoints.json
-/Users/sepicoala/Desktop/API/api/obj/Debug/net9.0/staticwebassets/msbuild.api.Microsoft.AspNetCore.StaticWebAssets.props
-/Users/sepicoala/Desktop/API/api/obj/Debug/net9.0/staticwebassets/msbuild.api.Microsoft.AspNetCore.StaticWebAssetEndpoints.props
-/Users/sepicoala/Desktop/API/api/obj/Debug/net9.0/staticwebassets/msbuild.build.api.props
-/Users/sepicoala/Desktop/API/api/obj/Debug/net9.0/staticwebassets/msbuild.buildMultiTargeting.api.props
-/Users/sepicoala/Desktop/API/api/obj/Debug/net9.0/staticwebassets/msbuild.buildTransitive.api.props
-/Users/sepicoala/Desktop/API/api/obj/Debug/net9.0/staticwebassets.pack.json
 /Users/sepicoala/Desktop/API/api/obj/Debug/net9.0/api.csproj.Up2Date
 /Users/sepicoala/Desktop/API/api/obj/Debug/net9.0/api.dll
 /Users/sepicoala/Desktop/API/api/obj/Debug/net9.0/refint/api.dll
@@ -159,3 +153,9 @@
 /Users/sepicoala/Desktop/API/api/obj/Debug/net9.0/api.genruntimeconfig.cache
 /Users/sepicoala/Desktop/API/api/obj/Debug/net9.0/ref/api.dll
 /Users/sepicoala/Desktop/API/api/obj/Debug/net9.0/api.sourcelink.json
+/Users/sepicoala/Desktop/API/api/obj/Debug/net9.0/rpswa.dswa.cache.json
+/Users/sepicoala/Desktop/API/api/obj/Debug/net9.0/rjimswa.dswa.cache.json
+/Users/sepicoala/Desktop/API/api/obj/Debug/net9.0/rjsmrazor.dswa.cache.json
+/Users/sepicoala/Desktop/API/api/obj/Debug/net9.0/rjsmcshtml.dswa.cache.json
+/Users/sepicoala/Desktop/API/api/obj/Debug/net9.0/staticwebassets.build.json.cache
+/Users/sepicoala/Desktop/API/api/obj/Debug/net9.0/swae.build.ex.cache
