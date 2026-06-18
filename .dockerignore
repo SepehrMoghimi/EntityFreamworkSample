@@ -1,0 +1,10 @@
+**/.git
+**/.vs
+**/.idea
+**/bin
+**/obj
+**/logs
+**/.env
+**/*.md
+**/Dockerfile*
+**/docker-compose*
