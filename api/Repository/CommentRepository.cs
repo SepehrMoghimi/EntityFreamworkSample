@@ -9,7 +9,6 @@ using api.Interfaces;
 using api.models;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Identity.Client;
 
 namespace api.Respository
 {

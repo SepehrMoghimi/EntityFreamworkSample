@@ -1,6 +1,5 @@
 using api.Data;
 using Microsoft.Extensions.Options;
-using Microsoft.EntityFrameworkCore.SqlServer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
 using api.Interfaces;
@@ -73,9 +72,10 @@ builder.Services.AddSwaggerGen(option =>
 });
 
 
+    var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
     builder.Services.AddDbContext<ApplicationDBContext>(options =>
     {
-        options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
+        options.UseMySql(connectionString, new MySqlServerVersion(new Version(8, 0, 36)));
     });
 
 builder.Services.AddIdentity<AppUser, IdentityRole>(Options =>
@@ -118,6 +118,12 @@ builder.Services.AddAuthentication(Options =>
 
 
     var app = builder.Build();
+
+    using (var scope = app.Services.CreateScope())
+    {
+        var db = scope.ServiceProvider.GetRequiredService<ApplicationDBContext>();
+        db.Database.Migrate();
+    }
 
     // Configure the HTTP request pipeline.
     if (app.Environment.IsDevelopment())
