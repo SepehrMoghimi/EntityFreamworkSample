@@ -7,68 +7,85 @@ using api.Data;
 using api.DTOs.stock;
 using api.Interfaces;
 using api.models;
-using Microsoft.AspNetCore.Http.HttpResults;
-using Microsoft.EntityFrameworkCore;
+using Dapper;
 
 namespace api.Respository
 {
     public class CommentRepository : ICommentRepository
     {
-        private readonly ApplicationDBContext _context;
-        public CommentRepository(ApplicationDBContext context)
+        private readonly IDapperContext _context;
+
+        public CommentRepository(IDapperContext context)
         {
             _context = context;
         }
 
-        public Task<bool> CommentExists(int id)
+        public async Task<bool> CommentExists(int id)
         {
-            return _context.Comments.AnyAsync(s => s.Id == id);
+            const string query = "SELECT COUNT(1) FROM Comments WHERE Id = @id";
+            using var connection = _context.CreateConnection();
+            return await connection.QuerySingleAsync<int>(query, new { id }) > 0;
         }
 
         public async Task<Comment> CreateAsync(Comment commentModel)
         {
-            await _context.Comments.AddAsync(commentModel);
-            await _context.SaveChangesAsync();
+            const string query = @"
+                INSERT INTO Comments (Title, Content, CreatedOn, StockId)
+                VALUES (@Title, @Content, @CreatedOn, @StockId);
+                SELECT LAST_INSERT_ID();";
+
+            using var connection = _context.CreateConnection();
+            var id = await connection.QuerySingleAsync<int>(query, commentModel);
+            commentModel.Id = id;
             return commentModel;
         }
 
         public async Task<Comment?> DeleteAsync(int id)
         {
-            var commentModel = await _context.Comments.FirstOrDefaultAsync(s => s.Id == id);
-            if (commentModel == null)
-            {
+            var comment = await GetByIdAsync(id);
+            if (comment == null)
                 return null;
-            }
 
-            _context.Comments.Remove(commentModel);
-            await _context.SaveChangesAsync();
-            return commentModel;
+            const string query = "DELETE FROM Comments WHERE Id = @id";
+            using var connection = _context.CreateConnection();
+            await connection.ExecuteAsync(query, new { id });
+            return comment;
         }
 
         public async Task<List<Comment>> GetAllAsync()
         {
-            return await _context.Comments.ToListAsync();
+            const string query = "SELECT * FROM Comments";
+            using var connection = _context.CreateConnection();
+            return (await connection.QueryAsync<Comment>(query)).ToList();
         }
 
         public async Task<Comment?> GetByIdAsync(int id)
         {
-            return await _context.Comments.FirstOrDefaultAsync(i => i.Id == id);
+            const string query = "SELECT * FROM Comments WHERE Id = @id";
+            using var connection = _context.CreateConnection();
+            return await connection.QuerySingleOrDefaultAsync<Comment>(query, new { id });
         }
 
         public async Task<Comment?> UpdateAsync(int id, Comment commentModel)
         {
-            var existingComment = await _context.Comments.FindAsync(id);
+            var existingComment = await GetByIdAsync(id);
             if (existingComment == null)
-            {
                 return null;
-            }
 
-            existingComment.Title = commentModel.Title;
-            existingComment.Content = commentModel.Content;
+            const string query = @"
+                UPDATE Comments
+                SET Title = @Title, Content = @Content
+                WHERE Id = @id";
 
-            await _context.SaveChangesAsync();
+            using var connection = _context.CreateConnection();
+            await connection.ExecuteAsync(query, new
+            {
+                id,
+                commentModel.Title,
+                commentModel.Content
+            });
 
-            return existingComment;
+            return await GetByIdAsync(id);
         }
     }
-} 
+}

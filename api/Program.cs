@@ -1,14 +1,9 @@
 using api.Data;
-using Microsoft.Extensions.Options;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
 using api.Interfaces;
 using api.Respository;
 using Serilog;
 using Serilog.Formatting.Compact;
-using api.models;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.CodeAnalysis.Differencing;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using api.Service;
@@ -73,20 +68,7 @@ builder.Services.AddSwaggerGen(option =>
 
 
     var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
-    builder.Services.AddDbContext<ApplicationDBContext>(options =>
-    {
-        options.UseMySql(connectionString, new MySqlServerVersion(new Version(8, 0, 36)));
-    });
-
-builder.Services.AddIdentity<AppUser, IdentityRole>(Options =>
-{
-    Options.Password.RequireDigit = true;
-    Options.Password.RequireLowercase = true;
-    Options.Password.RequireUppercase = true;
-    Options.Password.RequireNonAlphanumeric = true;
-    Options.Password.RequiredLength = 12;
-})
-.AddEntityFrameworkStores<ApplicationDBContext>();
+    builder.Services.AddScoped<IDapperContext>(sp => new DapperContext(builder.Configuration));
 
 builder.Services.AddAuthentication(Options =>
 {
@@ -118,12 +100,6 @@ builder.Services.AddAuthentication(Options =>
 
 
     var app = builder.Build();
-
-    using (var scope = app.Services.CreateScope())
-    {
-        var db = scope.ServiceProvider.GetRequiredService<ApplicationDBContext>();
-        db.Database.Migrate();
-    }
 
     // Configure the HTTP request pipeline.
     if (app.Environment.IsDevelopment())

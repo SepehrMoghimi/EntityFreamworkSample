@@ -7,7 +7,6 @@ using api.Interfaces;
 using api.models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 
 namespace api.Controllers
 {
@@ -31,7 +30,7 @@ namespace api.Controllers
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
 
-            var user = await _userManager.Users.FirstOrDefaultAsync(x => x.UserName == loginDto.UserName.ToLower());
+            var user = await _userManager.FindByNameAsync(loginDto.UserName);
 
             if (user == null) return Unauthorized("Invalid username!");
 
